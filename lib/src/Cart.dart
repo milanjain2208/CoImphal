@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_app/services/UpiPayment.dart';
 import 'package:learn_app/shared_widgets/CustomerDetails.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'CustomerScreen.dart';
 class ProductPair {
@@ -17,17 +16,9 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-  Future<void> _getPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-    return;
-  }
 
   @override
 
-  void initState() {
-    _getPrefs();
-    super.initState();
-  }
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +26,7 @@ class _ProductsState extends State<Products> {
           color: Colors.black, //change your color here
         ),
         backgroundColor: Colors.white,
-        title: Text("Items Added",style: TextStyle(
+        title: Text("Total Amount: " + "Rs " +calc_amount().toString(),style: TextStyle(
           color: Colors.blueAccent,
         ),),
       ),
@@ -43,29 +34,26 @@ class _ProductsState extends State<Products> {
           itemCount: products.length,
           separatorBuilder: (context, index) =>Divider(),
           itemBuilder: (BuildContext context,int index) {
-             return Dismissible(
-               onDismissed: (direction){
-                 setState(() {
-                   products.removeAt(index);
-                 });
-               },
-               background: Container(
-                 color: Colors.redAccent,
-               ),
-               child: ListTile(
-                 leading: ConstrainedBox(
-                   constraints: BoxConstraints(
-                     minWidth: 44,
-                     minHeight: 44,
-                     maxWidth: 64,
-                     maxHeight: 64,
-                   ),
-                   child: Image.network(products[index].product['images'][0]),
+             return ListTile(
+               leading: ConstrainedBox(
+                 constraints: BoxConstraints(
+                   minWidth: 44,
+                   minHeight: 44,
+                   maxWidth: 64,
+                   maxHeight: 64,
                  ),
-                 title:Text(products[index].product['name']),
-                 subtitle: Text(products[index].quantity.toString()),
+                 child: Image.network(products[index].product['images'][0]),
                ),
-               key: ObjectKey(products[index]),
+               trailing: IconButton(
+                 icon: Icon(Icons.delete),
+                 onPressed: () {
+                   setState(() {
+                     products.removeAt(index);
+                   });
+                 },
+               ),
+               title:Text(products[index].product['name']),
+               subtitle: Text(products[index].quantity.toString()),
              );
           }
       ),

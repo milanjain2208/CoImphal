@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:learn_app/shared_widgets/CustomerDetails.dart';
 import 'package:learn_app/src/Home.dart';
 import 'package:learn_app/src/LogIn.dart';
 
@@ -20,6 +21,7 @@ class AuthService {
   //Sign out
   signOut() {
     FirebaseAuth.instance.signOut();
+    prefs.clear();
   }
 
   //SignIn

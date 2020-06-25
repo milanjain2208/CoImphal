@@ -39,7 +39,7 @@ class MyHomePage extends StatelessWidget {
     return StreamBuilder(
       stream: Firestore.instance.collection('Items').snapshots(),
       builder: (context, snapshot) {
-        if(!snapshot.hasData) return Center(child: CircularProgressIndicator());
+        if(!snapshot.hasData) return Center(child: Scaffold(body: Center(child: CircularProgressIndicator())));
         return DefaultTabController(
           length: snapshot.data.documents.length,
           child: Scaffold(
@@ -113,14 +113,18 @@ class ProductView extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Text(products[index]['name'],style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.blueAccent,
-                      ),),
-                      Text("Rs "+ products[index]['price'].toString(),style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.blueAccent,
-                      ),),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(products[index]['name'],style: TextStyle(
+                          fontSize: 20,
+                        ),),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Rs "+ products[index]['price'].toString(),style: TextStyle(
+                          fontSize: 20,
+                        ),),
+                      ),
                     ],
                   )
                 ],

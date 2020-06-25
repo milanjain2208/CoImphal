@@ -46,18 +46,23 @@ class _DetailsState extends State<Details> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text(widget.product['name'], style: TextStyle(
-                fontSize: 30,
-                color: Colors.blueAccent,
-              ),),
-              Text("Rs " + widget.product['price'].toString(), style: TextStyle(
-                fontSize: 30,
-                color: Colors.blueAccent,
-              ),),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(widget.product['name'], style: TextStyle(
+                  fontSize: 20,
+                ),),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Rs " + widget.product['price'].toString(), style: TextStyle(
+                  fontSize: 20,
+                ),),
+              ),
             ],
           ),
+          SizedBox(),
           Text(widget.product['description'], style: TextStyle(
-            fontSize: 20,
+            fontSize: 15,
             color: Colors.blueAccent,
           ),),
           Padding(

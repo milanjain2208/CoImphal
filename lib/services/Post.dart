@@ -11,6 +11,8 @@ void postToFireStore() {
     "name" : prefs.get('name'),
     "address" : prefs.get('address'),
     "phoneNo" : prefs.get('phone_no'),
+    "transactionId" : txnId,
+    "Location" : position.toString(),
   });
 }
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:learn_app/shared_widgets/CustomerDetails.dart';
 
 
+
 class Customer extends StatelessWidget {
   final formKey = new GlobalKey<FormState>();
   @override
@@ -19,6 +20,7 @@ class Customer extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.only(left: 25.0, right: 25.0),
                   child: TextFormField(
+                    validator: (val)=>val.isEmpty?'Enter your name':null,
                     decoration: InputDecoration(
                         hintText: 'Enter your name',
                         border: OutlineInputBorder(
@@ -30,6 +32,7 @@ class Customer extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.only(left: 25.0, right: 25.0),
                   child: TextFormField(
+                    validator: (val)=>val.isEmpty?'Enter your home address':null,
                     decoration: InputDecoration(
                         hintText: 'Enter your Address',
                         border: OutlineInputBorder(
@@ -47,9 +50,12 @@ class Customer extends StatelessWidget {
                       child: Center(
                           child:Text('Save')),
                       onPressed: () {
-                        prefs.setString('name', name);
-                        prefs.setString('address',address);
-                        Navigator.pop(context);
+                        if(formKey.currentState.validate()) {
+                          prefs.setString('name', name);
+                          prefs.setString('address',address);
+                          Navigator.pop(context);
+                        }
+
                       }))
             ],
           )),

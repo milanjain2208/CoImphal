@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_app/services/Auth.dart';
 import 'package:learn_app/shared_widgets/CustomerDetails.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,17 +14,6 @@ class _LoginPageState extends State<LoginPage> {
   String phoneNo, verificationId, smsCode;
 
   bool codeSent = false;
-  Future<void> _getPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-    return;
-  }
-
-  @override
-
-  void initState() {
-    _getPrefs();
-    super.initState();
-  }
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
@@ -37,6 +25,14 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                   padding: EdgeInsets.only(left: 25.0, right: 25.0),
                   child: TextFormField(
+                    validator: (val){
+                      if(val.length!=10) {
+                        return "Invalid phoneNo";
+                      }
+                      else {
+                        return "Valid";
+                      }
+                    },
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(hintText: 'Enter phone number',prefixText: '+91',
                         border: OutlineInputBorder(borderSide: BorderSide(color: Colors.purpleAccent))),
