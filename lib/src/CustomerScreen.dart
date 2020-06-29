@@ -32,9 +32,9 @@ class Customer extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.only(left: 25.0, right: 25.0),
                   child: TextFormField(
-                    validator: (val)=>val.isEmpty?'Enter your home address':null,
+                    validator: (val)=>val.isEmpty?'Enter your address':null,
                     decoration: InputDecoration(
-                        hintText: 'Enter your Address',
+                        hintText: 'Enter your home/office Address',
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.purpleAccent))),
                     onChanged: (val) {

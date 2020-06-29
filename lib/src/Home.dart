@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:learn_app/services/Auth.dart';
 import 'package:learn_app/shared_widgets/Card_Badge.dart';
+import 'package:learn_app/shared_widgets/Functions.dart';
 
+import 'Contact.dart';
 import 'ProductSpec.dart';
 
 
@@ -63,6 +65,16 @@ class MyHomePage extends StatelessWidget {
 
               ),
               actions: <Widget>[
+                IconButton(
+                  color: Colors.black,
+                  icon: Icon(Icons.phone),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Contact()));
+                  },
+                ),
                 FlatButton.icon(
                   label: Text("LogOut"),
                   icon: Icon(Icons.person),
@@ -87,13 +99,22 @@ class MyHomePage extends StatelessWidget {
 
 }
 
-class ProductView extends StatelessWidget {
+
+
+class ProductView extends StatefulWidget {
   final dynamic products;
   ProductView({this.products});
+
   @override
+  _ProductViewState createState() => _ProductViewState();
+}
+
+class _ProductViewState extends State<ProductView> {
+  @override
+
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: products.length,
+        itemCount: widget.products.length,
         itemBuilder: (BuildContext context, int index) {
           return Card(
             shape: RoundedRectangleBorder(side: BorderSide(color: Colors.purple,width: 4.0),borderRadius: BorderRadius.circular(10.0)),
@@ -102,28 +123,55 @@ class ProductView extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Details(product: products[index],)));
+                        builder: (context) => Details(product: widget.products[index],)));
               },
               child: Column(
                 children: <Widget>[
-                  Image.network(
-                    products[index]['images'][0],
-                    fit: BoxFit.fitWidth,
+                  Container(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: Image.network(
+                      widget.products[index]['images'][0],
+                      cacheHeight: 500,
+                      cacheWidth: 500,
+                      loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null ?
+                            loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                                : null,
+                          ),
+                        );
+                      },
+                    ),
                   ),
+//              Container(
+//              height: MediaQuery.of(context).size.height / 2,
+//              ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(products[index]['name'],style: TextStyle(
+                        child: Text(widget.products[index]['name'],style: TextStyle(
                           fontSize: 20,
                         ),),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("Rs "+ products[index]['price'].toString(),style: TextStyle(
-                          fontSize: 20,
-                        ),),
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Text("Rs "+ widget.products[index]['price'].toString()+" ",style: TextStyle(
+                                  fontSize: 20,
+                                ),),
+                                omitSring(widget.products[index]['mrp']),
+                              ],
+                            ),
+                            additional(widget.products[index]['additional']),
+                          ],
+                        ),
                       ),
                     ],
                   )
@@ -134,7 +182,10 @@ class ProductView extends StatelessWidget {
         }
     );
   }
+
 }
+
+
 
 
 

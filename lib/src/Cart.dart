@@ -63,10 +63,32 @@ class _ProductsState extends State<Products> {
 //        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         label: Text("Place Order"),
         onPressed: () {
-           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => prefs.get('name')==null ?Customer():UpiPayment()));
+          if(totalamount<5) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Alert"),
+                  content: Text("Your order should be a minimum of Rs 300"),
+                  actions: [
+                     FlatButton(
+                       child: Text("OK"),
+                        onPressed: () {
+                         Navigator.pop(context);
+                     },
+                    )
+                  ],
+                );
+              },
+            );
+          }
+          else {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => prefs.get('name')==null ?Customer():UpiPayment()));
+          }
+
         },
       ),
     );

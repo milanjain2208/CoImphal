@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> {
   Future<bool>  _pos = _position();
   static Future<bool> _position() async {
     position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    double distanceInMeters = await Geolocator().distanceBetween(position.latitude, position.longitude, 24.8558, 93.94343);
+    double distanceInMeters = await Geolocator().distanceBetween(position.latitude, position.longitude, 24.809528, 93.935994);
     if(distanceInMeters>12000) {
       return true;
     }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:learn_app/shared_widgets/Card_Badge.dart';
+import 'package:learn_app/shared_widgets/Functions.dart';
 import 'Cart.dart';
 
 
@@ -44,7 +45,7 @@ class _DetailsState extends State<Details> {
               height: 250,
               child: HorizontalList(product: widget.product,)),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -54,9 +55,19 @@ class _DetailsState extends State<Details> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("Rs " + widget.product['price'].toString(), style: TextStyle(
-                  fontSize: 20,
-                ),),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Text("Rs " + widget.product['price'].toString(), style: TextStyle(
+                          fontSize: 20,
+                        ),),
+                        omitSring(widget.product['mrp']),
+                      ],
+                    ),
+                    additional(widget.product['additional']),
+                  ],
+                ),
               ),
             ],
           ),
@@ -70,12 +81,12 @@ class _DetailsState extends State<Details> {
               child: Text("Select quantity")),
           Slider(
             value: _value,
-            min: 1.0,
-            max: 10.0,
-            divisions: 9,
+            min: widget.product['min'].toDouble(),
+            max: widget.product['max'].toDouble(),
+            divisions: widget.product['max']-widget.product['min'],
             activeColor: Colors.purple,
             onChanged: _onValueChanged,
-            label: _value.floor().toString() + "Box",
+            label: _value.floor().toString(),
           ),
           FlatButton(
             shape: RoundedRectangleBorder(
@@ -109,6 +120,16 @@ class HorizontalList extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return new Image.network(
           product['images'][index],
+          loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
+            if (loadingProgress == null) return child;
+            return Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null ?
+                loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                    : null,
+              ),
+            );
+          },
         );
       },
       itemCount: product['images'].length,
